@@ -1223,7 +1223,7 @@ impl<'a> WasmLd<'a> {
         //   the one linear memory as `shared`
         //
         // * `--max-memory=1G` - when specifying a shared memory this must also
-        //   be specified. We conservatively choose 1GB but users should be able
+        //   be specified. We conservatively choose 4GB but users should be able
         //   to override this with `-C link-arg`.
         //
         // * `--import-memory` - it doesn't make much sense for memory to be
@@ -1356,9 +1356,13 @@ impl<'a> Linker for WasmLd<'a> {
         // symbols explicitly passed via the `--export` flags above and hides all
         // others. Various bits and pieces of wasm32-unknown-unknown tooling use
         // this, so be sure these symbols make their way out of the linker as well.
-        if self.sess.target.os == "unknown" {
-            self.link_args(&["--export=__heap_base", "--export=__data_end"]);
-        }
+        
+        // FIXME: evaluate if check
+        // if self.sess.target.os == "unknown" {
+        self.cmd.arg("--export=__heap_base");
+        self.cmd.arg("--export=__stack_pointer");
+        self.cmd.arg("--export=__data_end");
+        //}
     }
 
     fn subsystem(&mut self, _subsystem: &str) {}
