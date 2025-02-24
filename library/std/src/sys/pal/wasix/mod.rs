@@ -31,8 +31,6 @@ pub mod process;
 pub mod stdio;
 #[path = "../unsupported/thread_local_dtor.rs"]
 pub mod thread_local_dtor;
-#[path = "../unix/thread_local_key.rs"]
-pub mod thread_local_key;
 #[path = "../wasi/time.rs"]
 pub mod time;
 
@@ -48,9 +46,8 @@ pub mod locks {
     pub(crate) use mutex::Mutex;
     pub(crate) use rwlock::RwLock;
 }
-//#[cfg_attr(target_pointer_width = "32", path = "../wasm/atomics/futex.rs")]
-#[cfg_attr(target_pointer_width = "32", path = "atomics/futex.rs")]
-#[cfg_attr(target_pointer_width = "64", path = "atomics/futex.rs")]
+#[cfg_attr(target_pointer_width = "32", path = "../wasm/atomics/futex.rs")]
+#[cfg_attr(target_pointer_width = "64", path = "../wasm/atomics/futex.rs")]
 pub mod futex;
 #[path = "../unix/stack_overflow.rs"]
 pub mod stack_overflow;
